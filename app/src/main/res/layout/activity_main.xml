@@ -1,18 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.fashiontechwakeup.app.MainActivity">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Alarm"
+        android:id="@+id/set_alarm"
+        android:layout_centerHorizontal="true"
+        />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/set_alarm"
+        android:textSize="24sp"
+        android:layout_marginTop="6dp"
+        android:id="@+id/alarm_time"
+        />
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reminders"
+        android:layout_below="@+id/alarm_time"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:id="@+id/reminders_text"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:text="+"
+        android:layout_alignBaseline="@+id/reminders_text"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/addReminder"
+        />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_below="@+id/addReminder"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ON"
+        android:id="@+id/on"
+        android:layout_alignParentStart="true"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OFF"
+        android:id="@+id/off"
+        android:layout_alignParentEnd="true"
+        />
+
+</RelativeLayout>

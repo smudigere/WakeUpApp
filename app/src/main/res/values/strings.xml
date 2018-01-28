@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">WakeUpB****</string>
+    <string name="app_name">VibeMeUp</string>
+
+    <string name="COMMAND">COMMAND</string>
+    <string name="ON">ON</string>
+    <string name="OFF">OFF</string>
 </resources>
