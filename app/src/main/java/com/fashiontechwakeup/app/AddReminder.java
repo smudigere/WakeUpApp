@@ -88,10 +88,15 @@ public class AddReminder extends AppCompatActivity {
 
                 Intent alertIntent = new Intent(getApplicationContext(), AlertReciever.class);
                 alertIntent.putExtra(getString(R.string.COMMAND), "http://10.19.14.148/socket2On");
+                alertIntent.putExtra("TITLE", reminder_input.getText().toString());
 
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         PendingIntent.getBroadcast(getApplicationContext(), ID, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
+                alertIntent.putExtra(getString(R.string.COMMAND), "http://10.19.14.148/socket2Off");
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis() + 10000,
+                        PendingIntent.getBroadcast(getApplicationContext(), 100, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
                 prefs.edit().putInt("IDDD", ID + 1).apply();
                 database.close();

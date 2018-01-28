@@ -53,6 +53,7 @@ public class SetAlarm extends AppCompatActivity {
                 try {
 
                     alertIntent.putExtra(getString(R.string.COMMAND), "http://10.19.14.148/socket2On");
+                    alertIntent.putExtra("TITLE", "WAKE UP");
 
                     Calendar calendar = Calendar.getInstance();
                     calendar.set(Calendar.MINUTE,   mMinute);
@@ -67,7 +68,12 @@ public class SetAlarm extends AppCompatActivity {
                     AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
                     alarmManager.set(AlarmManager.RTC_WAKEUP, sys_time,
-                            PendingIntent.getBroadcast(getApplicationContext(), 1, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+                            PendingIntent.getBroadcast(getApplicationContext(), 1000, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+                    alertIntent.putExtra(getString(R.string.COMMAND), "http://10.19.14.148/socket2Off");
+
+                    alarmManager.set(AlarmManager.RTC_WAKEUP, sys_time + 30000,
+                            PendingIntent.getBroadcast(getApplicationContext(), 2000, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
                     prefs.edit().putString("Alarm Time", mHour + " : " + mMinute).apply();
 

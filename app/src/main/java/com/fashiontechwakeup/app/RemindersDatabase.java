@@ -57,15 +57,15 @@ public class RemindersDatabase extends SQLiteOpenHelper {
 
             cursor.close();
 
-            logging();
+            logging("insert");
         } catch (Exception e)   {
             e.printStackTrace();
         }
     }
 
-    private void logging()  {
+    private void logging(String a)  {
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.i("Get events", DatabaseUtils.dumpCursorToString(db.rawQuery("select * from " + TABLE_NAME, null)));
+        Log.i("Get events" + a, DatabaseUtils.dumpCursorToString(db.rawQuery("select * from " + TABLE_NAME, null)));
     }
 
     /**
@@ -113,6 +113,14 @@ public class RemindersDatabase extends SQLiteOpenHelper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void deleteEntry(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE notification_no = " + id);
+        Log.i("DELETE ENTRY", String.valueOf(id));
+        logging("delete");
+        db.close();
     }
 
 }

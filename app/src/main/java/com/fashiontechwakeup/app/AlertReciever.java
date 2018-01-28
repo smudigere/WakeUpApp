@@ -20,6 +20,7 @@ public class AlertReciever extends BroadcastReceiver {
         Log.i(getClass().toString(), String.valueOf(System.currentTimeMillis()));
 
         String command = intent.getStringExtra(context.getString(R.string.COMMAND));
+        String title = intent.getStringExtra("TITLE");
 
         new ConnectToArduino().execute(command);
 
@@ -29,7 +30,7 @@ public class AlertReciever extends BroadcastReceiver {
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);      //Notification sound.
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "1")
-                .setContentTitle("Wake Up")
+                .setContentTitle(title)
                 .setAutoCancel(true)
                 .setSmallIcon(R.drawable.notification_icon)
                 .setSound(defaultSoundUri)

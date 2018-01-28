@@ -3,13 +3,9 @@ package com.fashiontechwakeup.app;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,15 +15,12 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements
@@ -37,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements
     private TextView alarmTime;
     private SharedPreferences prefs;
     private List<List<String>> reminders;
+
+    private BaseAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +57,19 @@ public class MainActivity extends AppCompatActivity implements
             RemindersDatabase database = new RemindersDatabase(getApplicationContext());
             reminders = database.getEvents();
 
+            for (int i = 0; i < reminders.size(); i++)  {
+                long expiry = Long.parseLong(reminders.get(i).get(2));
+
+                if (expiry < System.currentTimeMillis())
+                    database.deleteEntry(Integer.parseInt(reminders.get(i).get(0)));
+            }
+
+            reminders = database.getEvents();
+
             database.close();
 
             ListView listView = (ListView) findViewById(R.id.listView);
-            BaseAdapter adapter = new ListViewAdapter();
+            adapter = new ListViewAdapter();
             listView.setAdapter(adapter);
 
             listView.setOnItemClickListener(this);
@@ -88,6 +92,23 @@ public class MainActivity extends AppCompatActivity implements
 
                 new ConnectToArduino().execute("http://10.19.14.148/socket2Off");
             }
+        }
+
+        try {
+
+            RemindersDatabase database = new RemindersDatabase(getApplicationContext());
+            reminders = database.getEvents();
+
+            database.close();
+
+            ListView listView = (ListView) findViewById(R.id.listView);
+            adapter = new ListViewAdapter();
+            listView.setAdapter(adapter);
+
+            listView.setOnItemClickListener(this);
+
+        } catch (Exception e)   {
+            e.printStackTrace();
         }
     }
 
@@ -113,9 +134,7 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {}
 
 
     private class ConnectToArduino extends AsyncTask<String, Void, Boolean> {
@@ -212,8 +231,7 @@ public class MainActivity extends AppCompatActivity implements
                 TextView expiryText = (TextView) convertView.findViewById(R.id.expiryText);
 
                 Date date = new Date(Long.parseLong(reminders.get(position).get(2)));
-                DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-                format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
+                DateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.US);
                 expiryText.append(format.format(date));
 
             } catch (Exception e)   {
